@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
     QApplication a(argc, argv);
     QApplication::setFont(QFont("Segoe UI Semilight"));
     //set style
-    QFile styleSheetFile("SpyBot.qss");
+    QFile styleSheetFile("scrollStyle.qss");
     styleSheetFile.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(styleSheetFile.readAll());
     a.setStyleSheet(styleSheet);

@@ -1,0 +1,27 @@
+artaria cataris elevator
+cataris dairon shuttle
+dairon cataris shuttle
+cataris artaria red
+artaria cataris red
+cataris dairon purple
+dairon artaria elevator
+artaria dairon elevator
+dairon burenia upper shuttle
+burenia dairon lower shuttle
+dairon ferenia right elevator
+ferenia dairon left elevator
+dairon burenia upper shuttle
+burenia ghavoran elevator
+ghavoran elun shuttle
+elun ghavoran shuttle
+ghavoran ferenia shuttle
+ferenia dairon left elevator
+dairon artaria yellow
+artaria cataris red
+cataris ghavoran orange
+ghavoran burenia green
+burenia ghavoran green
+ghavoran hanubia shuttle
+hanubia ferenia elevator
+ferenia hanubia elevator
+hanubia itorash elevator

@@ -1,4 +1,0 @@
-Automatically start:1
-Split hotkey:32
-Pause hotkey:80
-Route:C:/Users/Brian/source/repos/Autosplit/Autosplit/Routes/Any% NMG.txt

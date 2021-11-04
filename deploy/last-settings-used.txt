@@ -1,4 +1,0 @@
-Automatically start:0
-Split hotkey:-1
-Pause hotkey:-1
-Route:None

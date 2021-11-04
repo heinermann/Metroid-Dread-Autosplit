@@ -115,6 +115,7 @@ void FrameProcesser::sendKeyboardInput(HOTKEY_TYPE hotkeyType) {
     ZeroMemory(inputs, sizeof(inputs));
 
     inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.dwFlags = KEYEVENTF_EXTENDEDKEY;
     inputs[0].ki.wVk = code;
 
     SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));

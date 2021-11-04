@@ -50,8 +50,6 @@ Autosplit::Autosplit(QWidget* parent)
 
     loadedSettingsFileName = QString("None");
 
-    backend = Backend();
-
     sourceButtons.setExclusive(true);
     destButtons.setExclusive(true);
     transportButtons.setExclusive(true);
@@ -188,15 +186,6 @@ Autosplit::Autosplit(QWidget* parent)
     this->show();
     videoSource = videoCaptureDialog();
     capture = cv::VideoCapture(videoSource);
-    std::string deviceName = devices.at(videoSource).deviceName;
-
-    std::transform(deviceName.begin(), deviceName.end(), deviceName.begin(), ::tolower);
-
-    //I don't know why someone would select their webcam, but they bog down the preview widget. FPS reduction to help performance.
-    if (deviceName.find("webcam") != std::string::npos) {
-        fps = 30;
-    }
-
     videoPreviewTimer = new QTimer(this);
     connect(videoPreviewTimer, &QTimer::timeout, this, &Autosplit::setLivePreview);
     videoPreviewTimer->start(1000.0 / fps);
@@ -566,14 +555,11 @@ void Autosplit::tabButtonRelease() {
 }
 
 void Autosplit::continueButtonClick(){
-    qDebug() << "continue click";
     QDialog* dialog = qobject_cast<QDialog*>(sender()->parent());
 
     QPushButton* checked = qobject_cast<QPushButton*>(captureSelectButtons.checkedButton());
     int source = captureSelectButtonMap.at(checked);
     dialog->done(source);
-    dialog->close();
-    qDebug() << "done";
 }
 
 void Autosplit::splitSetHotkeyClick() {
@@ -1015,11 +1001,15 @@ int Autosplit::videoCaptureDialog() {
     videoScrollContainer->setLayout(videoLayout);
     videoScrollContainer->setObjectName("QDialogScrollContainer");
 
-    devices = msmf::DeviceEnumerator().getVideoDevicesMap();
-    for (auto const& device : devices) {
+    std::map<int, msmf::Device> devicesTotal = msmf::DeviceEnumerator().getVideoDevicesMap();
+    for (auto const& device : devicesTotal) {
         int id = device.first;
-        std::string name = device.second.deviceName;
-        addDisplayCaptureSelectButton(videoScrollContainer, id, QString::fromUtf8(name));
+        std::string deviceName = device.second.deviceName;
+        std::transform(deviceName.begin(), deviceName.end(), deviceName.begin(), ::tolower);
+        if (deviceName.find("webcam") == std::string::npos) {
+            qDebug() << "no";
+            addDisplayCaptureSelectButton(videoScrollContainer, id, QString::fromUtf8(device.second.deviceName));
+        }
     }
 
     QPushButton* firstButton = videoScrollContainer->findChild<QPushButton*>();

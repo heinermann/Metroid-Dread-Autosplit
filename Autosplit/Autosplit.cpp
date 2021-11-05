@@ -485,8 +485,7 @@ int Autosplit::hotkeyDialog() {
     selectLabel->setText("Press any key...");
     dialogLayout->addWidget(selectLabel);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->exec();
-    return dialog->result();
+    return dialog->exec();
 }
 
 void Autosplit::startMainAutosplitterThreads() {
@@ -1035,8 +1034,7 @@ int Autosplit::videoCaptureDialog() {
     connect(continueButton, &QPushButton::released, this, &Autosplit::routeEditButtonRelease);
     connect(dialog, &QDialog::finished, this, &Autosplit::previewDialogClose);
 
-    dialog->exec();
-    return dialog->result();
+    return dialog->exec();
 }
 
 void Autosplit::previewDialogClose() {

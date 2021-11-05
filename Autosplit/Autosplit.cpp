@@ -1002,12 +1002,11 @@ int Autosplit::videoCaptureDialog() {
     videoScrollContainer->setObjectName("QDialogScrollContainer");
 
     std::map<int, msmf::Device> devicesTotal = msmf::DeviceEnumerator().getVideoDevicesMap();
-    for (auto const& device : devicesTotal) {
+    for (auto device : devicesTotal) {
         int id = device.first;
         std::string deviceName = device.second.deviceName;
         std::transform(deviceName.begin(), deviceName.end(), deviceName.begin(), ::tolower);
         if (deviceName.find("webcam") == std::string::npos) {
-            qDebug() << "no";
             addDisplayCaptureSelectButton(videoScrollContainer, id, QString::fromUtf8(device.second.deviceName));
         }
     }
@@ -1064,18 +1063,15 @@ void Autosplit::enableEditRouteButtons() {
 }
 
 void Autosplit::videoCaptureSelectClick() {
-    qDebug() << "video capture select click";
     int newVideoSource = videoCaptureDialog();
     if (newVideoSource != videoSource) {
         capture = cv::VideoCapture(newVideoSource);
         videoSource = newVideoSource;
         fps = 60;
         videoPreviewTimer->stop();
+        devices = msmf::DeviceEnumerator().getVideoDevicesMap();
         std::string deviceName = devices.at(newVideoSource).deviceName;
         std::transform(deviceName.begin(), deviceName.end(), deviceName.begin(), ::tolower);
-        if (deviceName.find("webcam") != std::string::npos) {
-            fps = 30;
-        }
         videoPreviewTimer->start(1000.0 / fps);
     }
 }

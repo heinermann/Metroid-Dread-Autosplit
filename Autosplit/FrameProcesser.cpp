@@ -1,21 +1,24 @@
 #include "FrameProcesser.h"
-#include"Windows.h"
-#include<qDebug>
-#include<qstring.h>
+#include <QDebug>
+#include <QString>
+#include <chrono>
+#include <thread>
+#include <Windows.h>
 
 void FrameProcesser::process() {
+    using namespace std::chrono_literals;
 
     bool captureStopped{ false };
-    Sleep(100);
+    std::this_thread::sleep_for(100ms);
     IMAGE_TYPE previous(IMAGE_TYPE::BLACK);
-	for (SplitImage image : splitImages) {
-		bool foundMatch{ false };
+    for (SplitImage image : splitImages) {
+        bool foundMatch{ false };
 
-		if (image.imageType == IMAGE_TYPE::COLOR) {
-			compare = cv::imread("./SplitImages/"+image.name+".png");
-		}
+        if (image.imageType == IMAGE_TYPE::COLOR) {
+            compare = cv::imread("./SplitImages/"+image.name+".png");
+        }
         int interval = 5;
-		while (!foundMatch) {
+        while (!foundMatch) {
             frame = reader.read();
             if (!frame.empty()) {
                 switch (image.imageType) {
@@ -48,18 +51,18 @@ void FrameProcesser::process() {
                     }
                     break;
                 }
-                Sleep(interval);
+                std::this_thread::sleep_for(std::chrono::milliseconds(interval));
             }
             captureStopped = !reader.isCapturing();
             if (captureStopped) break;
-		}
+        }
         if (captureStopped) break;
         previous = image.imageType;
         if ( image.hotkey == HOTKEY_TYPE(SPLIT) || image.hotkey == HOTKEY_TYPE(PAUSE) ) {
             sendKeyboardInput(image.hotkey);
         }
-        Sleep(image.cooldown);
-	}
+        std::this_thread::sleep_for(std::chrono::milliseconds(image.cooldown));
+    }
     qDebug() << "done with frame processing thread";
     emit finished();
 }

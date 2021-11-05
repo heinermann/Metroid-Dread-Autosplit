@@ -3,7 +3,6 @@
 #include<vector>
 #include"opencv2/opencv.hpp"
 #include<qDebug>
-#include"Windows.h"
 
 VideoReader::VideoReader(int src, cv::Mat& fr)
 	:capture(src), frame(fr), readCapture(true) {}

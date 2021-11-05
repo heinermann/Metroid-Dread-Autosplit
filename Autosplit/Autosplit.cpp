@@ -7,7 +7,6 @@
 #include<iostream>
 #include<vector>
 #include<regex>
-#include"Windows.h"
 #include "Backend.h"
 #include"opencv2/opencv.hpp"
 #include"RouteSegment.h"

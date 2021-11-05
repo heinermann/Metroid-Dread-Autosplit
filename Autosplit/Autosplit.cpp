@@ -1076,14 +1076,15 @@ void Autosplit::setLivePreview() {
     QGraphicsView* videoImage = ui.ImagePreview;
     delete videoImage->scene();
     cv::Mat image;
-    capture.read(image);
-    cvtColor(image, image, cv::COLOR_BGR2RGB);
-    cv::resize(image, image, cv::Size(508, 286));
-    QPixmap pixmap = QPixmap::fromImage(QImage(image.data, image.cols, image.rows, QImage::Format_RGB888));
-    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
-    QGraphicsScene* scene = new QGraphicsScene(this);
-    scene->addItem(item);
-    videoImage->setScene(scene);
+    if (capture.read(image)) {
+        cvtColor(image, image, cv::COLOR_BGR2RGB);
+        cv::resize(image, image, cv::Size(508, 286));
+        QPixmap pixmap = QPixmap::fromImage(QImage(image.data, image.cols, image.rows, QImage::Format_RGB888));
+        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
+        QGraphicsScene* scene = new QGraphicsScene(this);
+        scene->addItem(item);
+        videoImage->setScene(scene);
+    }
 }
 
 bool Autosplit::checkPreviousSettingsUsed() {

@@ -1068,10 +1068,6 @@ void Autosplit::videoCaptureSelectClick() {
         capture = cv::VideoCapture(newVideoSource);
         videoSource = newVideoSource;
         fps = 60;
-        videoPreviewTimer->stop();
-        devices = msmf::DeviceEnumerator().getVideoDevicesMap();
-        std::string deviceName = devices.at(newVideoSource).deviceName;
-        std::transform(deviceName.begin(), deviceName.end(), deviceName.begin(), ::tolower);
         videoPreviewTimer->start(1000.0 / fps);
     }
 }

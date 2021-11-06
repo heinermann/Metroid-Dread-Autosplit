@@ -576,6 +576,8 @@ void Autosplit::pauseSetHotkeyClick() {
 void Autosplit::saveSettingsClick() {
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save Settings File"), "./SettingsFiles/" + loadedSettingsFileName, tr("Text Files(*.txt)"));
+    if (fileName.isEmpty()) return;
+
     writeSettingsToFile(fileName);
 }
 
@@ -591,6 +593,8 @@ void Autosplit::writeSettingsToFile(QString fileName)
 void Autosplit::loadSettingsClick() {
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open Settings File"), "./SettingsFiles", tr("Text Files(*.txt)"));
+    if (fileName.isEmpty()) return;
+
     loadedSettingsFileName = fileName;
     loadSettingsFile(fileName);
 }
@@ -773,6 +777,11 @@ void Autosplit::newRouteButtonClick() {
 }
 
 void Autosplit::loadRouteButtonClick() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Route File"), "./Routes", tr("Text Files(*.txt)"));
+
+    if (fileName.isEmpty()) return;
+
     for(RouteSegment segment : route.getSegments()){
         QPushButton* button = segment.getRouteSegmentFrame()->findChild<QPushButton*>();
         button->removeEventFilter(this);
@@ -781,8 +790,6 @@ void Autosplit::loadRouteButtonClick() {
 
     route.clear();
 
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open Route File"), "./Routes", tr("Text Files(*.txt)"));
     loadedRouteFileName = fileName;
     writeSettingsToFile(QString("./last-settings-used.txt"));
     readRouteFile(fileName);
@@ -847,6 +854,9 @@ void Autosplit::saveRouteButtonClick() {
     qDebug() << loadedRouteFileName;
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save Route File"), "./Routes/"+loadedRouteFileName.split("/").last(), tr("Text Files(*.txt)"));
+
+    if (fileName.isEmpty()) return;
+
     QFile file = QFile(fileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
